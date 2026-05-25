@@ -1,0 +1,130 @@
+// Version: 1.0.0
+type CalendarEvent__740917318 =
+  {
+    createdAt : Time__900049286;
+    description : Text;
+    endDate : Time__900049286;
+    eventType : Text;
+    id : Nat;
+    memberIds : [Nat];
+    startDate : Time__900049286;
+    title : Text
+  };
+type Chore__771830246 =
+  {
+    assignedTo : ?Nat;
+    createdAt : Time__900049286;
+    description : Text;
+    dueDate : Time__900049286;
+    id : Nat;
+    isCompleted : Bool;
+    recurrence : Text;
+    title : Text
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type FamilyData__136869971 =
+  {
+    var calendarEvents : Map__605269027<Nat, CalendarEvent__740917318>;
+    var chores : Map__605269027<Nat, Chore__771830246>;
+    var family : Family__662038081;
+    var familyMembers : Map__605269027<Nat, FamilyMember__410392939>;
+    var mealAttendance : Map__605269027<Text, MealAttendance__506445945>;
+    var mealOptions : Map__605269027<Nat, MealOption__623373513>;
+    var moodEntries : Map__605269027<Nat, MoodEntry__69853156>;
+    var nextChoreId : Nat;
+    var nextEventId : Nat;
+    var nextMealId : Nat;
+    var nextMemberId : Nat;
+    var nextMoodId : Nat;
+    var nextShoppingId : Nat;
+    var shoppingItems : Map__605269027<Nat, ShoppingItem__130214270>
+  };
+type FamilyMember__410392939 =
+  {
+    avatarEmoji : Text;
+    color : Text;
+    createdAt : Time__900049286;
+    familyId : Nat;
+    id : Nat;
+    inviteCode : ?Text;
+    isLinked : Bool;
+    name : Text;
+    principal : ?Principal;
+    role : Text
+  };
+type Family__662038081 =
+  {
+    adminPrincipal : Principal;
+    createdAt : Time__900049286;
+    id : Nat;
+    name : Text
+  };
+type Int__270357528 = Int__616954475;
+type Int__616954475 = Int;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type InviteCodeLink__105749896 = {familyId : Nat; memberId : Nat};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type MealAttendance__506445945 =
+  {attending : Bool; date : Time__900049286; memberId : Nat};
+type MealOption__623373513 =
+  {
+    createdAt : Time__900049286;
+    description : Text;
+    id : Nat;
+    isSelected : Bool;
+    name : Text;
+    proposedBy : Nat;
+    scheduledDate : Time__900049286;
+    votes : [Nat]
+  };
+type MoodEntry__69853156 =
+  {
+    createdAt : Time__900049286;
+    date : Time__900049286;
+    id : Nat;
+    memberId : Nat;
+    mood : Text;
+    note : Text
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PrincipalLink__897153805 = {familyId : Nat; memberId : Nat};
+type ShoppingItem__130214270 =
+  {
+    addedBy : Nat;
+    category : Text;
+    createdAt : Time__900049286;
+    id : Nat;
+    isCompleted : Bool;
+    name : Text;
+    quantity : Text
+  };
+type Time__796480547 = Int__270357528;
+type Time__900049286 = Time__796480547;
+actor {
+  stable DAY_NS : Nat;
+  stable var families :
+    {
+      var root : Node__46230540<Nat, FamilyData__136869971>;
+      var size : Nat__490723111
+    };
+  stable var inviteCodes :
+    {
+      var root : Node__46230540<Text, InviteCodeLink__105749896>;
+      var size : Nat__490723111
+    };
+  stable var nextFamilyId : Nat;
+  stable var principalToFamily :
+    {
+      var root : Node__46230540<Principal, PrincipalLink__897153805>;
+      var size : Nat__490723111
+    }
+};

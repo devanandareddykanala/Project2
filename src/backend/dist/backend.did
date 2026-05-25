@@ -1,0 +1,193 @@
+type Time = int;
+type ShoppingItem = 
+ record {
+   addedBy: nat;
+   category: text;
+   createdAt: Time;
+   id: nat;
+   isCompleted: bool;
+   name: text;
+   quantity: text;
+ };
+type SampleData = 
+ record {
+   chores: vec Chore;
+   events: vec CalendarEvent;
+   mealOptions: vec MealOption;
+   members: vec FamilyMember;
+   moodEntries: vec MoodEntry;
+   shoppingItems: vec ShoppingItem;
+ };
+type MoodEntry = 
+ record {
+   createdAt: Time;
+   date: Time;
+   id: nat;
+   memberId: nat;
+   mood: text;
+   note: text;
+ };
+type MealOption = 
+ record {
+   createdAt: Time;
+   description: text;
+   id: nat;
+   isSelected: bool;
+   name: text;
+   proposedBy: nat;
+   scheduledDate: Time;
+   votes: vec nat;
+ };
+type MealAttendance = 
+ record {
+   attending: bool;
+   date: Time;
+   memberId: nat;
+ };
+type InviteDetails = 
+ record {
+   familyName: text;
+   memberAvatarEmoji: text;
+   memberColor: text;
+   memberName: text;
+ };
+type FamilyStatus = 
+ variant {
+   FamilyAdmin: record {
+                  familyId: nat;
+                  memberId: nat;
+                };
+   FamilyMember: record {
+                   familyId: nat;
+                   memberId: nat;
+                 };
+   NotLinked;
+ };
+type FamilyMember = 
+ record {
+   avatarEmoji: text;
+   color: text;
+   createdAt: Time;
+   familyId: nat;
+   id: nat;
+   inviteCode: opt text;
+   isLinked: bool;
+   name: text;
+   "principal": opt principal;
+   role: text;
+ };
+type Family = 
+ record {
+   adminPrincipal: principal;
+   createdAt: Time;
+   id: nat;
+   name: text;
+ };
+type Chore = 
+ record {
+   assignedTo: opt nat;
+   createdAt: Time;
+   description: text;
+   dueDate: Time;
+   id: nat;
+   isCompleted: bool;
+   recurrence: text;
+   title: text;
+ };
+type CalendarEvent = 
+ record {
+   createdAt: Time;
+   description: text;
+   endDate: Time;
+   eventType: text;
+   id: nat;
+   memberIds: vec nat;
+   startDate: Time;
+   title: text;
+ };
+service : {
+  addCalendarEvent: (title: text, description: text, startDate: Time,
+   endDate: Time, memberIds: vec nat, eventType: text) -> (nat);
+  addChore: (title: text, description: text, assignedTo: opt nat, dueDate:
+   Time, recurrence: text) -> (nat);
+  addFamilyMemberWithInvite: (name: text, color: text, avatarEmoji: text) ->
+   (record {
+      inviteCode: text;
+      memberId: nat;
+    });
+  addMealOption: (name: text, description: text, proposedBy: nat,
+   scheduledDate: Time) -> (nat);
+  addMoodEntry: (memberId: nat, mood: text, note: text, date: Time) -> (nat);
+  addShoppingItem: (name: text, quantity: text, category: text, addedBy:
+   nat) -> (nat);
+  clearAllData: () -> (bool);
+  clearCompletedShoppingItems: () -> (nat);
+  createFamily: (familyName: text, adminName: text, adminColor: text,
+   adminAvatarEmoji: text) -> (record {
+                                 familyId: nat;
+                                 memberId: nat;
+                               });
+  deleteCalendarEvent: (id: nat) -> (bool);
+  deleteChore: (id: nat) -> (bool);
+  deleteFamilyMember: (id: nat) -> (bool);
+  deleteMealOption: (id: nat) -> (bool);
+  deleteMoodEntry: (id: nat) -> (bool);
+  deleteShoppingItem: (id: nat) -> (bool);
+  generateSampleData: () -> (SampleData);
+  getAllCalendarEvents: () -> (vec CalendarEvent) query;
+  getAllChores: () -> (vec Chore) query;
+  getAllFamilyMembers: () -> (vec FamilyMember) query;
+  getAllMealOptions: () -> (vec MealOption) query;
+  getAllMoodEntries: () -> (vec MoodEntry) query;
+  getAllShoppingItems: () -> (vec ShoppingItem) query;
+  getCalendarEventsByDateRange: (startDate: Time, endDate: Time) ->
+   (vec CalendarEvent) query;
+  getCalendarEventsByMember: (memberId: nat) -> (vec CalendarEvent) query;
+  getChoresByMember: (memberId: nat) -> (vec Chore) query;
+  getDataCounts: () ->
+   (record {
+      chores: nat;
+      events: nat;
+      meals: nat;
+      members: nat;
+      moodEntries: nat;
+      shoppingItems: nat;
+    }) query;
+  getFamilyMember: (id: nat) -> (opt FamilyMember) query;
+  getInviteDetails: (code: text) -> (InviteDetails) query;
+  getMealAttendanceForDate: (date: Time) -> (vec MealAttendance) query;
+  getMealOptionsByDate: (date: Time) -> (vec MealOption) query;
+  getMemberAttendance: (date: Time, memberId: nat) ->
+   (opt MealAttendance) query;
+  getMoodEntriesByDateRange: (startDate: Time, endDate: Time) ->
+   (vec MoodEntry) query;
+  getMoodEntriesByMember: (memberId: nat) -> (vec MoodEntry) query;
+  getMyFamily: () -> (Family) query;
+  getMyFamilyStatus: () -> (FamilyStatus) query;
+  getMyMember: () -> (FamilyMember) query;
+  getShoppingItemsByCategory: (category: text) -> (vec ShoppingItem) query;
+  isAdmin: () -> (bool) query;
+  joinFamilyWithCode: (inviteCode: text) ->
+   (record {
+      familyId: nat;
+      memberId: nat;
+    });
+  regenerateInviteCode: (memberId: nat) -> (text);
+  selectMeal: (mealId: nat) -> (MealOption);
+  setMealAttendance: (date: Time, memberId: nat, attending: bool) ->
+   (MealAttendance);
+  toggleChoreComplete: (id: nat) -> (Chore);
+  toggleShoppingItemComplete: (id: nat) -> (ShoppingItem);
+  updateCalendarEvent: (id: nat, title: text, description: text, startDate:
+   Time, endDate: Time, memberIds: vec nat, eventType: text) ->
+   (CalendarEvent);
+  updateChore: (id: nat, title: text, description: text, assignedTo: 
+   opt nat, dueDate: Time, recurrence: text) -> (Chore);
+  updateFamilyMember: (id: nat, name: text, color: text, avatarEmoji:
+   text) -> (FamilyMember);
+  updateMemberRole: (id: nat, newRole: text) -> (FamilyMember);
+  updateMoodEntry: (id: nat, mood: text, note: text) -> (MoodEntry);
+  updateShoppingItem: (id: nat, name: text, quantity: text, category:
+   text) -> (ShoppingItem);
+  voteForMeal: (mealId: nat, memberId: nat) -> (MealOption);
+}

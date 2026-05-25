@@ -1,0 +1,23 @@
+{
+  "overview": "Develvyn — The Family Suite is a multi-mode family and apartment management platform built on Internet Identity, covering Founder, Apartment, Family, and Watchman modes.",
+  "features": [
+    "Internet Identity login with consent and recovery guidance flows",
+    "Role-based Mode Selector showing only assigned modes",
+    "Invite code system with 4 code types, expiry, revocation, and brute-force protection",
+    "Apartment canister with Founder approval flow, flat management, and role assignment",
+    "Canister-level role enforcement across all data access",
+    "Session timeouts with warnings per mode",
+    "Audit logging for all apartment actions",
+    "PWA installable on Android"
+  ],
+  "category": "family-management-app",
+  "tags": [
+    "family",
+    "apartment",
+    "internet-identity",
+    "multi-role",
+    "motoko",
+    "pwa"
+  ],
+  "last_updated": "2026-05-22T08:20:20.153Z"
+}
